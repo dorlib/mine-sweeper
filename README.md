@@ -15,7 +15,7 @@ Hope you enjoy it!
 
 1. Download golang from [here](https://go.dev/)
 2. Clone the project to your local machine with `git clone https://github.com/dorlib/tic-tac-toe.git`
-3. While in `../tic-tac-toe/components` run in your terminal `go run ./`
+3. While in `../mine-sweeper/components` run in your terminal `go run ./`
 4. Enjoy 🙂
 
 ---
