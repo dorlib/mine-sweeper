@@ -14,7 +14,7 @@ Hope you enjoy it!
 # How To Run
 
 1. Download golang from [here](https://go.dev/)
-2. Clone the project to your local machine with `git clone https://github.com/dorlib/tic-tac-toe.git`
+2. Clone the project to your local machine with `git clone https://github.com/dorlib/mine-sweeper.git`
 3. While in `../mine-sweeper/components` run in your terminal `go run ./`
 4. Enjoy 🙂
 
