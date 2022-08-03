@@ -5,6 +5,29 @@ import (
 	"time"
 )
 
+var (
+	ScoreChan         = make(chan int)
+	keyboardEventChan = make(chan keyboardEvent)
+)
+
+type Game struct {
+	Board  [][]string
+	Score  int
+	IsOver bool
+}
+
+func InitPointer() *Pointer {
+	return newPointer(RIGHT, Cordiante{X: 0, Y: 0})
+}
+
+func InitScore() int {
+	return 0
+}
+
+func NewGame() *Game {
+	return &Game{Board: initBoard(10, 10), Score: initialScore()}
+}
+
 // Start starts the game
 func (g *Game) Start() {
 	if err := termbox.Init(); err != nil {
@@ -12,13 +35,13 @@ func (g *Game) Start() {
 	}
 	defer termbox.Close()
 
-	go listenToKeyboard(keyboardEventsChan)
+	go listenToKeyBoard(keyboardEventsChan)
 
 	if err := g.render(); err != nil {
 		panic(err)
 	}
 
-mainloop:
+mainLoop:
 	for {
 		select {
 		case p := <-pointsChan:
@@ -31,7 +54,7 @@ mainloop:
 			case RETRY:
 				g.retry()
 			case END:
-				break mainloop
+				break mainLoop
 			}
 		default:
 			if !g.isOver {

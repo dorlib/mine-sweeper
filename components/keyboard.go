@@ -57,7 +57,7 @@ func listenToKeyBoard(evChan chan keyboardEvent) {
 			case termbox.KeyEnter:
 				evChan <- keyboardEvent{eventType: PLACE, key: ev.Key}
 			default:
-				if ev.Ch == "r" {
+				if string(ev.Ch) == "r" {
 					evChan <- keyboardEvent{eventType: RETRY, key: ev.Key}
 				}
 			}
