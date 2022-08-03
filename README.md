@@ -1,4 +1,4 @@
-# Golang Tic-Tac-Toe Game
+# Golang Mine Sweeper Game
 
 
 hello everyone! this is a terminal game using go. 
@@ -7,26 +7,20 @@ Hope you enjoy it!
 
 ---
 
-![GAME](https://raw.githubusercontent.com/dorlib/tic-tac-toe/master/public/Capture.PNG)
+
 
 ---
 
 # How To Run
 
 1. Download golang from [here](https://go.dev/)
-2. Clone the project to your local machine with `git clone https://github.com/dorlib/tic-tac-toe.git`
-3. While in `../tic-tac-toe/components` run in your terminal `go run ./`
+2. Clone the project to your local machine with `git clone https://github.com/dorlib/mine-sweeper.git`
+3. While in `../mine-sweeper/components` run in your terminal `go run ./`
 4. Enjoy 🙂
 
 ---
 
 # How To Play
-After the game starts, you will need to insert the name of the first player and his symbol.
-Then, you will need to insert the name of the second player and his symbol will be generated automatically.
-For placing your symbol on the board, on your turn, insert the number of the row and then the numbers of 
-the column without space, from 0 to 2.
-For example, if you want to place your symbol in the top right corner, write: `02`.
-After the game ends, you can insert `q` for quitting and `r` to go another round!
 
 ---
 # Contributing
