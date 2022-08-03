@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/nsf/termbox-go"
-	"time"
 )
 
 var (
@@ -11,7 +10,7 @@ var (
 )
 
 type Game struct {
-	Board  [][]string
+	Board  *Board
 	Score  int
 	IsOver bool
 }
@@ -22,6 +21,10 @@ func InitPointer() *Pointer {
 
 func InitScore() int {
 	return 0
+}
+
+func InitBoard() *Board {
+	return newBoard()
 }
 
 func (g *Game) Retry() {
@@ -35,7 +38,15 @@ func (g *Game) AddScore(p int) {
 }
 
 func NewGame() *Game {
-	return &Game{Board: initBoard(10, 10), Score: InitScore()}
+	board := initBoard(10, 10)
+	pointer := InitPointer()
+	printBoard(board, 10, 10, true, 10, 10, pointer)
+	return &Game{Board: board, Score: InitScore()}
+
+}
+
+func (g *Game) End() {
+	g.IsOver = true
 }
 
 // Start starts the game
@@ -47,11 +58,11 @@ func (g *Game) Start() {
 
 	go listenToKeyBoard(keyboardEventChan)
 
-	if err := g.render(); err != nil {
-		panic(err)
-	}
+	//if err := g.Render(); err != nil {
+	//	panic(err)
+	//}
 
-mainLoop:
+mainloop:
 	for {
 		select {
 		case p := <-ScoreChan:
@@ -60,24 +71,22 @@ mainLoop:
 			switch e.eventType {
 			case MOVE:
 				d := keyToDirection(e.key)
-				g.Board.Pointer.changeDirection(d)
+				g.Board.pointer.changeDirection(d)
 			case RETRY:
-				g.retry()
+				g.Retry()
 			case END:
-				break mainLoop
+				break mainloop
 			}
 		default:
-			if !g.isOver {
-				if err := g.arena.moveSnake(); err != nil {
-					g.end()
+			if !g.IsOver {
+				if err := g.Board.MovePointer; err != nil {
+					g.End()
 				}
 			}
 
-			if err := g.render(); err != nil {
-				panic(err)
-			}
-
-			time.Sleep(g.moveInterval())
+			//if err := g.Render(); err != nil {
+			//	panic(err)
+			//}
 		}
 	}
 }

@@ -6,13 +6,13 @@ import (
 )
 
 type Bomb struct {
-	Emoji rune
+	Emoji string
 	X     int
 	Y     int
 }
 
-func NewBomb(x int, y int) *Food {
-	return &Food{
+func NewBomb(x int, y int) *Bomb {
+	return &Bomb{
 		Emoji: bombSymbol,
 		X:     x,
 		Y:     y,

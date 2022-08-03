@@ -1,24 +1,33 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 var hideSymbol string = "\U0001F972"
+var pointerSymbol string = "➞"
 var bombSymbol string = "💣"
 var flagSymbol string = "🏳️"
 var ok string = "🙂"
 var lost string = "☹"
 
-func initBoard(x, y int) [][]string {
+type Board struct {
+	pointer   *Pointer
+	board     [][]string
+	scoreChan chan int
+}
+
+func initBoard(x, y int) *Board {
 	board := make([][]string, x)
 	for i := 0; i < x; i++ {
 		for j := 0; j < y; j++ {
 			board[i] = append(board[i], hideSymbol)
 		}
 	}
-	return board
+	return newBoard(board)
 }
 
-func printBoard(board [][]string, detected int, left int, status bool, x int, y int) {
+func printBoard(board *Board, detected int, left int, status bool, x int, y int, p *Pointer) {
 
 	var s string
 	if status {
@@ -32,8 +41,12 @@ func printBoard(board [][]string, detected int, left int, status bool, x int, y 
 	for i := 0; i < y; i++ {
 		fmt.Printf("|          ")
 		for j := 0; j < x; j++ {
-			fmt.Printf(" ")
-			fmt.Printf(board[i][j])
+			if j == p.Body.X && i == p.Body.Y {
+				fmt.Printf(pointerSymbol)
+			} else {
+				fmt.Printf(" ")
+			}
+			fmt.Printf(board.board[i][j])
 			fmt.Printf(" ")
 		}
 		fmt.Printf("          |\n")
@@ -68,3 +81,10 @@ func printBoard(board [][]string, detected int, left int, status bool, x int, y 
 //		return false
 //	}
 //}
+
+func (b *Board) MovePointer() error {
+	if err := b.pointer.Move(); err != nil {
+		return err
+	}
+	return nil
+}

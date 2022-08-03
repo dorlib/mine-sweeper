@@ -57,7 +57,7 @@ func (p *Pointer) changeDirection(d Direction) {
 
 	opp := opposites[d]
 
-	if opp != o && opp != p.Direction {
+	if opp != 0 && opp != p.Direction {
 		p.Direction = d
 	}
 }
