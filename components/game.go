@@ -24,8 +24,18 @@ func InitScore() int {
 	return 0
 }
 
+func (g *Game) Retry() {
+	g.Board = initBoard(10, 10)
+	g.Score = InitScore()
+	g.IsOver = false
+}
+
+func (g *Game) AddScore(p int) {
+	g.Score += p
+}
+
 func NewGame() *Game {
-	return &Game{Board: initBoard(10, 10), Score: initialScore()}
+	return &Game{Board: initBoard(10, 10), Score: InitScore()}
 }
 
 // Start starts the game
@@ -35,7 +45,7 @@ func (g *Game) Start() {
 	}
 	defer termbox.Close()
 
-	go listenToKeyBoard(keyboardEventsChan)
+	go listenToKeyBoard(keyboardEventChan)
 
 	if err := g.render(); err != nil {
 		panic(err)
@@ -44,13 +54,13 @@ func (g *Game) Start() {
 mainLoop:
 	for {
 		select {
-		case p := <-pointsChan:
-			g.addPoints(p)
-		case e := <-keyboardEventsChan:
+		case p := <-ScoreChan:
+			g.AddScore(p)
+		case e := <-keyboardEventChan:
 			switch e.eventType {
 			case MOVE:
 				d := keyToDirection(e.key)
-				g.arena.snake.changeDirection(d)
+				g.Board.Pointer.changeDirection(d)
 			case RETRY:
 				g.retry()
 			case END:
