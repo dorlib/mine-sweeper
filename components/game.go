@@ -24,11 +24,11 @@ func InitScore() int {
 }
 
 func InitBoard() *Board {
-	return newBoard()
+	return newBoard(InitPointer(), 10, 10, ScoreChan)
 }
 
 func (g *Game) Retry() {
-	g.Board = initBoard(10, 10)
+	g.Board = InitBoard()
 	g.Score = InitScore()
 	g.IsOver = false
 }
@@ -38,7 +38,7 @@ func (g *Game) AddScore(p int) {
 }
 
 func NewGame() *Game {
-	board := initBoard(10, 10)
+	board := InitBoard()
 	pointer := InitPointer()
 	printBoard(board, 10, 10, true, 10, 10, pointer)
 	return &Game{Board: board, Score: InitScore()}

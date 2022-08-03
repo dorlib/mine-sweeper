@@ -17,14 +17,21 @@ type Board struct {
 	scoreChan chan int
 }
 
-func initBoard(x, y int) *Board {
-	board := make([][]string, x)
+func newBoard(p *Pointer, x, y int, s chan int) *Board {
+	b := make([][]string, x)
 	for i := 0; i < x; i++ {
 		for j := 0; j < y; j++ {
-			board[i] = append(board[i], hideSymbol)
+			b[i] = append(b[i], hideSymbol)
 		}
 	}
-	return newBoard(board)
+
+	board := &Board{
+		pointer:   p,
+		board:     b,
+		scoreChan: s,
+	}
+
+	return board
 }
 
 func printBoard(board *Board, detected int, left int, status bool, x int, y int, p *Pointer) {
