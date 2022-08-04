@@ -2,6 +2,8 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
+	"time"
 )
 
 var hideSymbol string = "\U0001F972"
@@ -18,6 +20,8 @@ type Board struct {
 }
 
 func newBoard(p *Pointer, x, y int, s chan int) *Board {
+	rand.Seed(time.Now().UnixNano())
+
 	b := make([][]string, x)
 	for i := 0; i < x; i++ {
 		for j := 0; j < y; j++ {
@@ -32,6 +36,25 @@ func newBoard(p *Pointer, x, y int, s chan int) *Board {
 	}
 
 	return board
+}
+
+func (b *Board) placeBombs() {
+	var x, y int
+
+	bombMap := make(map[Cordiante]float64)
+
+	for i := 0; i < 20; i++ {
+		x = rand.Intn(10)
+		y = rand.Intn(10)
+
+		cord := Cordiante{X: x, Y: y}
+
+		if bombMap[cord] != 0.0 {
+			i--
+		} else {
+			bombMap[cord] = float64(i)
+		}
+	}
 }
 
 func printBoard(board *Board, detected int, left int, status bool, x int, y int, p *Pointer) {
