@@ -1,6 +1,9 @@
 package main
 
-import tea "github.com/charmbracelet/bubbletea"
+import (
+	tea "github.com/charmbracelet/bubbletea"
+	"time"
+)
 
 func (b Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
@@ -16,7 +19,16 @@ func (b Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return b.Pointer.moveRight(&b)
 		case "right", "d":
 			return b.Pointer.moveLeft(&b)
+		case "enter", " ":
+			return b.showCell()
+		case "f":
+			return b.toggleFlag()
 		}
 	}
-	return
+	if b.revealEmptyNeighbours() {
+		return b, tea.Tick(time.Millisecond*100, func(t time.Time) tea.Msg {
+			return msg
+		})
+	}
+	return b, nil
 }
