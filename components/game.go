@@ -16,9 +16,9 @@ func (b Board) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case "down", "s":
 			b.Pointer.moveDown(&b)
 		case "left", "a":
-			b.Pointer.moveRight(&b)
-		case "right", "d":
 			b.Pointer.moveLeft(&b)
+		case "right", "d":
+			b.Pointer.moveRight(&b)
 		case "enter", " ":
 			b.showCell()
 		case "f":

@@ -81,7 +81,7 @@ func (b *Board) EmptyCellsToReveal() bool {
 
 	for i := 0; i < b.width; i++ {
 		for j := 0; j < b.height; j++ {
-			cell := b.Cells[i][j]
+			cell := b.Cells[j][i]
 
 			if !cell.IsVisible || cell.closeBombs > 0 {
 				continue
@@ -104,9 +104,9 @@ func (b *Board) getCloseCells(x int, y int) []*Cell {
 
 	for i := -1; i < 2; i++ {
 		for j := -1; j < 1; j++ {
-			if j != 0 || x != 0 {
-				X := x + i
-				Y := y + j
+			if j != 0 || i != 0 {
+				X := x + j
+				Y := y + i
 				if Y < b.height && Y > 0 && X < b.width && x > 0 {
 					cells = append(cells, &b.Cells[y+i][x+j])
 				}
@@ -132,9 +132,7 @@ func (b *Board) showCell() {
 
 // toggleFlag change the state of a flag in a cell.
 func (b *Board) toggleFlag() {
-	hasFlag := b.Current.IsHasFlag
-
-	if hasFlag {
-		b.Current.IsHasFlag = !hasFlag
+	if !b.Current.IsVisible {
+		b.Current.IsHasFlag = !b.Current.IsHasFlag
 	}
 }
