@@ -24,6 +24,8 @@ const (
 	flag    = '⚑'
 	bomb    = '💣'
 	unknown = '❔'
+	ok      = '🙂'
+	lost    = '☹'
 )
 
 const (
@@ -63,7 +65,7 @@ func (t Token) print() string {
 	foregroundStyle := foregroundColor
 
 	if t.Type == Neighbours {
-		foregroundStyle = neighbourForegroundColor
+		foregroundStyle = fmt.Sprintf(neighbourForegroundColor, colorNeighbour(t.Content))
 	}
 	if t.Type == Flag {
 		foregroundStyle = flagForegroundColor

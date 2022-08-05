@@ -54,7 +54,7 @@ func (b Board) View() string {
 			viewModel[vmY+offsetY][vmX+offsetX].IsSelected = true
 		}
 	}
-	s := ""
+	s := "\n                 Bombs left: 10                               status                               flags placed: 10\n"
 	for _, row := range viewModel {
 		for _, cell := range row {
 			s += cell.print()
@@ -75,13 +75,13 @@ func (b Board) Init() tea.Cmd {
 	return nil
 }
 
-// EmptyCellsToReveal returns a slice of cells that should be revealed.
+// EmptyCellsToReveal reveals cells that should be revealed.
 func (b *Board) EmptyCellsToReveal() bool {
 	var cellsToReveal []*Cell
 
-	for i := 0; i < b.width; i++ {
-		for j := 0; j < b.height; j++ {
-			cell := b.Cells[j][i]
+	for i := 0; i < b.height; i++ {
+		for j := 0; j < b.width; j++ {
+			cell := b.Cells[i][j]
 
 			if !cell.IsVisible || cell.closeBombs > 0 {
 				continue
@@ -94,6 +94,12 @@ func (b *Board) EmptyCellsToReveal() bool {
 			}
 
 		}
+	}
+
+	for i := 0; i < len(cellsToReveal); i++ {
+		cell := cellsToReveal[i]
+		cell.IsVisible = true
+		cell.IsHasFlag = false
 	}
 	return len(cellsToReveal) > 0
 }

@@ -20,7 +20,7 @@ func check(field [][]Cell, x int, y int) int {
 	if y < 0 || x < 0 || y >= len(field) || x >= len(field[0]) {
 		return 0
 	}
-	if field[x][y].IsBomb {
+	if field[y][x].IsBomb {
 		return 1
 	}
 	return 0
@@ -38,8 +38,8 @@ func generateField(height int, width int) [][]Cell {
 	}
 	for h := range field {
 		for w := range field[h] {
-			for i := -1; i < 1; i++ {
-				for j := -1; j < 1; j++ {
+			for i := -1; i <= 1; i++ {
+				for j := -1; j <= 1; j++ {
 					if j != 0 || i != 0 {
 						field[h][w].closeBombs += check(field, h+i, w+j)
 					}
@@ -65,7 +65,7 @@ func main() {
 	p := tea.NewProgram(initBoard())
 	err := p.Start()
 	if err != nil {
-		fmt.Printf("error with %v", err)
+		fmt.Printf("error with %v	", err)
 		os.Exit(1)
 	}
 }
