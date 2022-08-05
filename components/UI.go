@@ -1,5 +1,7 @@
 package main
 
+import "fmt"
+
 type tokenType int
 
 type Token struct {
@@ -57,5 +59,57 @@ func CreateBoardCell(c Cell) Token {
 
 func (t Token) print() string {
 	c := t.Content
+	backgroundStyle := backgroundColor
+	foregroundStyle := foregroundColor
 
+	if t.Type == Neighbours {
+		foregroundStyle = neighbourForegroundColor
+	}
+	if t.Type == Flag {
+		foregroundStyle = flagForegroundColor
+	}
+	if t.Type == Bomb {
+		foregroundStyle = bombForegroundColor
+	}
+	if t.IsSelected {
+		backgroundStyle = selectedBackgroundColor
+	}
+	if t.Type == TableComponent {
+		foregroundStyle = tableForegroundColor
+	}
+
+	return fmt.Sprintf("%s%s%c", backgroundStyle, foregroundStyle, c)
+}
+
+func colorNeighbour(r rune) string {
+	switch r {
+	case '1':
+		return "32"
+	case '2':
+		return "33"
+	case '3':
+		return "31"
+	case '4':
+		return "35"
+	case '5':
+		return "36"
+	default:
+		return "36"
+	}
+}
+
+func addStructRow(row []Token, numOfElements int, start rune, separator rune, end rune) {
+	row[0] = Token{Content: start, Type: TableComponent}
+	for i := 0; i < numOfElements; i++ {
+		base := 1 + 4*i
+		row[base] = Token{Content: '─', Type: TableComponent}
+		row[base+1] = Token{Content: '─', Type: TableComponent}
+		row[base+2] = Token{Content: '─', Type: TableComponent}
+		row[base+3] = Token{Content: separator, Type: TableComponent}
+	}
+	row[len(row)-1] = Token{Content: end, Type: TableComponent}
+}
+
+func boardPositionToViewModelPosition(y int, x int) (int, int) {
+	return 1 + y*2, 2 + x*4
 }

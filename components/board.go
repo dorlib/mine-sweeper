@@ -5,7 +5,7 @@ import tea "github.com/charmbracelet/bubbletea"
 type GameState int
 
 const (
-	Noraml GameState = iota
+	Normal GameState = iota
 	gameOver
 	gameWon
 )
@@ -17,6 +17,58 @@ type Board struct {
 	Pointer   Pointer
 	Current   *Cell
 	GameState GameState
+}
+
+func (b Board) View() string {
+	height := len(b.Cells)*2 + 1
+	width := len(b.Cells[0])*4 + 1
+	viewModel := make([][]Token, height)
+
+	for i := 0; i < len(viewModel); i++ {
+		viewModel[i] = make([]Token, width)
+	}
+
+	numOfElements := len(b.Cells[0])
+	addStructRow(viewModel[0], numOfElements, '┌', '┬', '┐')
+	for h, boardRow := range b.Cells {
+		if h != 0 {
+			addStructRow(viewModel[h*2], numOfElements, '├', '┼', '┤')
+		}
+		viewRow := viewModel[h*2+1]
+		for w, cell := range boardRow {
+			base := w * 4
+			item := CreateBoardCell(cell)
+			viewRow[base] = Token{Content: '│', Type: TableComponent}
+			viewRow[base+1] = Token{Content: ' ', Type: TableSpace}
+			viewRow[base+2] = item
+			viewRow[base+3] = Token{Content: ' ', Type: TableSpace}
+		}
+		viewRow[len(viewRow)-1] = Token{Content: '│', Type: TableComponent}
+	}
+	addStructRow(viewModel[height-1], numOfElements, '└', '┴', '┘')
+
+	// Select the 'selected' cell
+	vmY, vmX := boardPositionToViewModelPosition(b.Pointer.Y, b.Pointer.X)
+	for offsetY := -1; offsetY <= 1; offsetY++ {
+		for offsetX := -2; offsetX <= 2; offsetX++ {
+			viewModel[vmY+offsetY][vmX+offsetX].IsSelected = true
+		}
+	}
+	s := ""
+	for _, row := range viewModel {
+		for _, cell := range row {
+			s += cell.print()
+		}
+		s += "\n"
+	}
+	return s
+}
+
+type Cell struct {
+	IsBomb     bool
+	IsVisible  bool
+	IsHasFlag  bool
+	closeBombs int
 }
 
 func (b Board) Init() tea.Cmd {
