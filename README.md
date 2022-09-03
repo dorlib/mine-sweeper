@@ -22,6 +22,8 @@ Hope you enjoy it!
 
 # How To Play
 
+- Use the arrows to navigate or the ASDW keys
+
 ---
 # Contributing
 
