@@ -7,10 +7,6 @@ Hope you enjoy it!
 
 ---
 
-
-
----
-
 # How To Run
 
 1. Download golang from [here](https://go.dev/)
