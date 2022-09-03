@@ -22,7 +22,9 @@ Hope you enjoy it!
 
 # How To Play
 
-- Use the arrows to navigate or the ASDW keys
+- Use the arrows to navigate or the ASDW keys.
+- Use the space or enter keys in order to reveal a cell.
+- Use the f key to toggle flags.
 
 ---
 # Contributing
